@@ -460,6 +460,12 @@
 
         </li>
 
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">bson.</span>float_parser</span>
+
+        </li>
+
     </ol></li>
 
     <li class="apidocModuleLi"><a href="#apidoc.module.bson.BSON">module bson.BSON</a><ol>
@@ -2219,6 +2225,28 @@
 
     </ol></li>
 
+    <li class="apidocModuleLi"><a href="#apidoc.module.bson.float_parser">module bson.float_parser</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.bson.float_parser.readIEEE754">
+            function <span class="apidocSignatureSpan">bson.float_parser.</span>readIEEE754
+            <span class="apidocSignatureSpan">(buffer, offset, endian, mLen, nBytes)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.bson.float_parser.writeIEEE754">
+            function <span class="apidocSignatureSpan">bson.float_parser.</span>writeIEEE754
+            <span class="apidocSignatureSpan">(buffer, value, offset, endian, mLen, nBytes)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
 </ol></div>
 
 <div class="apidocSectionDiv">
@@ -2646,6 +2674,8 @@
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
+
+
 
 
 
@@ -3654,7 +3684,24 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">toJSON = function () {
   return this.buffer != null ? this.buffer.toString(&#x27;base64&#x27;) : &#x27;&#x27;;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+	&#x27;use strict&#x27;;
+	var $export     = __webpack_require__(8)
+	  , toObject    = __webpack_require__(58)
+	  , toPrimitive = __webpack_require__(16);
+
+	$export($export.P + $export.F * __webpack_require__(7)(function(){
+	  return new Date(NaN).<span class="apidocCodeKeywordSpan">toJSON</span>() !== null || Date.prototype.toJSON.call({toISOString:
+function(){ return 1; }}) !== 1;
+	}), &#x27;Date&#x27;, {
+	  toJSON: function toJSON(key){
+	    var O  = toObject(this)
+	      , pv = toPrimitive(O);
+	    return typeof pv == &#x27;number&#x27; &#x26;&#x26; !isFinite(pv) ? null : O.toISOString();
+	  }
+	});
+...</pre></li>
     </ul>
 
 
@@ -3669,7 +3716,24 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">toString = function (format) {
   return this.buffer != null ? this.buffer.slice(0, this.position).toString(format) : &#x27;&#x27;;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+/***/ },
+/* 19 */
+/***/ function(module, exports) {
+
+	var id = 0
+	  , px = Math.random();
+	module.exports = function(key){
+	  return &#x27;Symbol(&#x27;.concat(key === undefined ? &#x27;&#x27; : key, &#x27;)_&#x27;, (++id + px).<span class="apidocCodeKeywordSpan
+">toString</span>(36));
+	};
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// optional / simple context binding
+...</pre></li>
     </ul>
 
 
@@ -3712,7 +3776,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     }
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+buffer[index++] = BSON.BSON_DATA_BINARY;
+// Number of written bytes
+var numberOfWrittenBytes = !isArray ? buffer.write(key, index, &#x27;utf8&#x27;) : buffer.write(key, index, &#x27;ascii&#x27;);
+// Encode the name
+index = index + numberOfWrittenBytes;
+buffer[index++] = 0;
+// Extract the buffer
+var data = value.<span class="apidocCodeKeywordSpan">value</span>(true);
+// Calculate size
+var size = value.position;
+// Add the deprecated 02 type 4 bytes of size to total
+if(value.sub_type == Binary.SUBTYPE_BYTE_ARRAY) size = size + 4;
+// Write the size of the string to buffer
+buffer[index++] = size &#x26; 0xff;
+buffer[index++] = (size &#x3e;&#x3e; 8) &#x26; 0xff;
+...</pre></li>
     </ul>
 
 
@@ -3770,7 +3850,24 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     this.position = offset &#x3e; this.position ? offset : this.position;
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	  iframe.style.display = &#x27;none&#x27;;
+	  __webpack_require__(48).appendChild(iframe);
+	  iframe.src = &#x27;javascript:&#x27;; // eslint-disable-line no-script-url
+	  // createDict = iframe.contentWindow.Object;
+	  // html.removeChild(iframe);
+	  iframeDocument = iframe.contentWindow.document;
+	  iframeDocument.open();
+	  iframeDocument.<span class="apidocCodeKeywordSpan">write</span>(lt + &#x27;script&#x27; + gt + &#x27;document.F=Object&#x27; +
+lt + &#x27;/script&#x27; + gt);
+	  iframeDocument.close();
+	  createDict = iframeDocument.F;
+	  while(i--)delete createDict[PROTOTYPE][enumBugKeys[i]];
+	  return createDict();
+	};
+
+	module.exports = Object.create || function create(O, Properties){
+...</pre></li>
     </ul>
 
 
@@ -3813,7 +3910,24 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">toJSON = function () {
   return {scope:this.scope, code:this.code};
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+	&#x27;use strict&#x27;;
+	var $export     = __webpack_require__(8)
+	  , toObject    = __webpack_require__(58)
+	  , toPrimitive = __webpack_require__(16);
+
+	$export($export.P + $export.F * __webpack_require__(7)(function(){
+	  return new Date(NaN).<span class="apidocCodeKeywordSpan">toJSON</span>() !== null || Date.prototype.toJSON.call({toISOString:
+function(){ return 1; }}) !== 1;
+	}), &#x27;Date&#x27;, {
+	  toJSON: function toJSON(key){
+	    var O  = toObject(this)
+	      , pv = toPrimitive(O);
+	    return typeof pv == &#x27;number&#x27; &#x26;&#x26; !isFinite(pv) ? null : O.toISOString();
+	  }
+	});
+...</pre></li>
     </ul>
 
 
@@ -3862,7 +3976,24 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     &#x27;$db&#x27;:this.db == null ? &#x27;&#x27; : this.db
   };
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+	&#x27;use strict&#x27;;
+	var $export     = __webpack_require__(8)
+	  , toObject    = __webpack_require__(58)
+	  , toPrimitive = __webpack_require__(16);
+
+	$export($export.P + $export.F * __webpack_require__(7)(function(){
+	  return new Date(NaN).<span class="apidocCodeKeywordSpan">toJSON</span>() !== null || Date.prototype.toJSON.call({toISOString:
+function(){ return 1; }}) !== 1;
+	}), &#x27;Date&#x27;, {
+	  toJSON: function toJSON(key){
+	    var O  = toObject(this)
+	      , pv = toPrimitive(O);
+	    return typeof pv == &#x27;number&#x27; &#x26;&#x26; !isFinite(pv) ? null : O.toISOString();
+	  }
+	});
+...</pre></li>
     </ul>
 
 
@@ -4058,7 +4189,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
   }
 
   // Normalization of ...</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+  for(; dIdx &#x3c;= lastDigit; dIdx++) {
+    significandLow = significandLow.multiply(Long.fromNumber(10));
+    significandLow = significandLow.add(Long.fromNumber(digits[dIdx]));
+  }
+}
+
+var significand = multiply64x2(significandHigh, Long.<span class="apidocCodeKeywordSpan">fromString</span>(&#x22;100000000000000000
+&#x22;));
+
+significand.low = significand.low.add(significandLow);
+
+if(lessThan(significand.low, significandLow)) {
+  significand.high = significand.high.add(Long.fromNumber(1));
+}
+...</pre></li>
     </ul>
 
 
@@ -4078,7 +4225,24 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">toJSON = function () {
   return { &#x22;$numberDecimal&#x22;: this.toString() };
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+	&#x27;use strict&#x27;;
+	var $export     = __webpack_require__(8)
+	  , toObject    = __webpack_require__(58)
+	  , toPrimitive = __webpack_require__(16);
+
+	$export($export.P + $export.F * __webpack_require__(7)(function(){
+	  return new Date(NaN).<span class="apidocCodeKeywordSpan">toJSON</span>() !== null || Date.prototype.toJSON.call({toISOString:
+function(){ return 1; }}) !== 1;
+	}), &#x27;Date&#x27;, {
+	  toJSON: function toJSON(key){
+	    var O  = toObject(this)
+	      , pv = toPrimitive(O);
+	    return typeof pv == &#x27;number&#x27; &#x26;&#x26; !isFinite(pv) ? null : O.toISOString();
+	  }
+	});
+...</pre></li>
     </ul>
 
 
@@ -4235,7 +4399,24 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
 
   // The scientific exponent checks are dictated by the string conversion
   // ...</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+/***/ },
+/* 19 */
+/***/ function(module, exports) {
+
+	var id = 0
+	  , px = Math.random();
+	module.exports = function(key){
+	  return &#x27;Symbol(&#x27;.concat(key === undefined ? &#x27;&#x27; : key, &#x27;)_&#x27;, (++id + px).<span class="apidocCodeKeywordSpan
+">toString</span>(36));
+	};
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// optional / simple context binding
+...</pre></li>
     </ul>
 
 
@@ -4278,7 +4459,24 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">toJSON = function () {
   return this.value;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+	&#x27;use strict&#x27;;
+	var $export     = __webpack_require__(8)
+	  , toObject    = __webpack_require__(58)
+	  , toPrimitive = __webpack_require__(16);
+
+	$export($export.P + $export.F * __webpack_require__(7)(function(){
+	  return new Date(NaN).<span class="apidocCodeKeywordSpan">toJSON</span>() !== null || Date.prototype.toJSON.call({toISOString:
+function(){ return 1; }}) !== 1;
+	}), &#x27;Date&#x27;, {
+	  toJSON: function toJSON(key){
+	    var O  = toObject(this)
+	      , pv = toPrimitive(O);
+	    return typeof pv == &#x27;number&#x27; &#x26;&#x26; !isFinite(pv) ? null : O.toISOString();
+	  }
+	});
+...</pre></li>
     </ul>
 
 
@@ -4336,7 +4534,24 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">toJSON = function () {
   return this.value;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+	&#x27;use strict&#x27;;
+	var $export     = __webpack_require__(8)
+	  , toObject    = __webpack_require__(58)
+	  , toPrimitive = __webpack_require__(16);
+
+	$export($export.P + $export.F * __webpack_require__(7)(function(){
+	  return new Date(NaN).<span class="apidocCodeKeywordSpan">toJSON</span>() !== null || Date.prototype.toJSON.call({toISOString:
+function(){ return 1; }}) !== 1;
+	}), &#x27;Date&#x27;, {
+	  toJSON: function toJSON(key){
+	    var O  = toObject(this)
+	      , pv = toPrimitive(O);
+	    return typeof pv == &#x27;number&#x27; &#x26;&#x26; !isFinite(pv) ? null : O.toISOString();
+	  }
+	});
+...</pre></li>
     </ul>
 
 
@@ -4399,7 +4614,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">fromBits = function (lowBits, highBits) {
   return new Long(lowBits, highBits);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+ c32 += c16 &#x3e;&#x3e;&#x3e; 16;
+ c16 &#x26;= 0xFFFF;
+ c32 += a32 + b32;
+ c48 += c32 &#x3e;&#x3e;&#x3e; 16;
+ c32 &#x26;= 0xFFFF;
+ c48 += a48 + b48;
+ c48 &#x26;= 0xFFFF;
+ return Long.<span class="apidocCodeKeywordSpan">fromBits</span>((c16 &#x3c;&#x3c; 16) | c00, (c48 &#x3c;&#x3c; 16) | c32);
+};
+
+/**
+* Returns the difference of this and the given Long.
+*
+* @method
+* @param {Long} other Long to subtract from this.
+...</pre></li>
     </ul>
 
 
@@ -4425,7 +4656,22 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
   }
   return obj;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+/**
+ * @type {number}
+ * @ignore
+ */
+Long.TWO_PWR_63_DBL_ = Long.TWO_PWR_64_DBL_ / 2;
+
+/** @type {Long} */
+Long.ZERO = Long.<span class="apidocCodeKeywordSpan">fromInt</span>(0);
+
+/** @type {Long} */
+Long.ONE = Long.fromInt(1);
+
+/** @type {Long} */
+Long.NEG_ONE = Long.fromInt(-1);
+...</pre></li>
     </ul>
 
 
@@ -4514,7 +4760,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
   }
   return result;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+  for(; dIdx &#x3c;= lastDigit; dIdx++) {
+    significandLow = significandLow.multiply(Long.fromNumber(10));
+    significandLow = significandLow.add(Long.fromNumber(digits[dIdx]));
+  }
+}
+
+var significand = multiply64x2(significandHigh, Long.<span class="apidocCodeKeywordSpan">fromString</span>(&#x22;100000000000000000
+&#x22;));
+
+significand.low = significand.low.add(significandLow);
+
+if(lessThan(significand.low, significandLow)) {
+  significand.high = significand.high.add(Long.fromNumber(1));
+}
+...</pre></li>
     </ul>
 
 
@@ -4586,7 +4848,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
   c48 &#x26;= 0xFFFF;
   return Long.fromBits((c16 &#x3c;&#x3c; 16) | c00, (c48 &#x3c;&#x3c; 16) | c32);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	&#x27;use strict&#x27;;
+	var strong = __webpack_require__(212);
+
+	// 23.2 Set Objects
+	module.exports = __webpack_require__(213)(&#x27;Set&#x27;, function(get){
+	  return function Set(){ return get(this, arguments.length &#x3e; 0 ? arguments[0] : undefined); };
+	}, {
+	  // 23.2.3.1 Set.prototype.<span class="apidocCodeKeywordSpan">add</span>(value)
+	  add: function add(value){
+	    return strong.def(this, value = value === 0 ? 0 : value, value);
+	  }
+	}, strong);
+
+/***/ },
+/* 215 */
+...</pre></li>
     </ul>
 
 
@@ -4601,7 +4879,24 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">and = function (other) {
   return Long.fromBits(this.low_ &#x26; other.low_, this.high_ &#x26; other.high_);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+}
+
+// Biased exponent
+var biasedExponent = (exponent + EXPONENT_BIAS);
+var dec = { low: Long.fromNumber(0), high: Long.fromNumber(0) };
+
+// Encode combination, exponent, and significand.
+if(significand.high.shiftRightUnsigned(49).<span class="apidocCodeKeywordSpan">and</span>(Long.fromNumber(1)).equals(Long.fromNumber
+)) {
+  // Encode &#x27;11&#x27; into bits 1 to 3
+  dec.high = dec.high.or(Long.fromNumber(0x3).shiftLeft(61));
+  dec.high = dec.high.or(Long.fromNumber(biasedExponent).and(Long.fromNumber(0x3fff).shiftLeft(47)));
+  dec.high = dec.high.or(significand.high.and(Long.fromNumber(0x7fffffffffff)));
+} else {
+  dec.high = dec.high.or(Long.fromNumber(biasedExponent &#x26; 0x3fff).shiftLeft(49));
+  dec.high = dec.high.or(significand.high.and(Long.fromNumber(0x1ffffffffffff)));
+...</pre></li>
     </ul>
 
 
@@ -4634,7 +4929,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     return 1;
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+* Return whether this Long is less than the other.
+*
+* @method
+* @param {Long} other Long to compare against.
+* @return {boolean} whether this Long is less than the other.
+*/
+Long.prototype.lessThan = function(other) {
+ return this.<span class="apidocCodeKeywordSpan">compare</span>(other) &#x3c; 0;
+};
+
+/**
+* Return whether this Long is less than or equal to the other.
+*
+* @method
+* @param {Long} other Long to compare against.
+...</pre></li>
     </ul>
 
 
@@ -4723,7 +5034,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
   }
   return res;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+  }
+
+  for(var i = 0; i &#x3c;= 3; i++) {
+    // Adjust remainder to match value of next dividend
+    _rem = _rem.shiftLeft(32);
+    // Add the divided to _rem
+    _rem = _rem.add(new Long(value.parts[i], 0));
+    value.parts[i] = _rem.<span class="apidocCodeKeywordSpan">div</span>(DIVISOR).low_;
+    _rem = _rem.modulo(DIVISOR);
+  }
+
+  return { quotient: value, rem: _rem };
+}
+
+// Multiply two Long values and return the 128 bit value
+...</pre></li>
     </ul>
 
 
@@ -4738,7 +5065,24 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">equals = function (other) {
   return (this.high_ == other.high_) &#x26;&#x26; (this.low_ == other.low_);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+}
+
+// Biased exponent
+var biasedExponent = (exponent + EXPONENT_BIAS);
+var dec = { low: Long.fromNumber(0), high: Long.fromNumber(0) };
+
+// Encode combination, exponent, and significand.
+if(significand.high.shiftRightUnsigned(49).and(Long.fromNumber(1)).<span class="apidocCodeKeywordSpan">equals</span>(Long.fromNumber
+)) {
+  // Encode &#x27;11&#x27; into bits 1 to 3
+  dec.high = dec.high.or(Long.fromNumber(0x3).shiftLeft(61));
+  dec.high = dec.high.or(Long.fromNumber(biasedExponent).and(Long.fromNumber(0x3fff).shiftLeft(47)));
+  dec.high = dec.high.or(significand.high.and(Long.fromNumber(0x7fffffffffff)));
+} else {
+  dec.high = dec.high.or(Long.fromNumber(biasedExponent &#x26; 0x3fff).shiftLeft(49));
+  dec.high = dec.high.or(significand.high.and(Long.fromNumber(0x1ffffffffffff)));
+...</pre></li>
     </ul>
 
 
@@ -4753,7 +5097,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">getHighBits = function () {
   return this.high_;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+// Number of written bytes
+var numberOfWrittenBytes = !isArray ? buffer.write(key, index, &#x27;utf8&#x27;) : buffer.write(key, index, &#x27;ascii&#x27;);
+// Encode the name
+index = index + numberOfWrittenBytes;
+buffer[index++] = 0;
+var longVal = Long.fromNumber(value);
+var lowBits = longVal.getLowBits();
+var highBits = longVal.<span class="apidocCodeKeywordSpan">getHighBits</span>();
+// Encode low bits
+buffer[index++] = lowBits &#x26; 0xff;
+buffer[index++] = (lowBits &#x3e;&#x3e; 8) &#x26; 0xff;
+buffer[index++] = (lowBits &#x3e;&#x3e; 16) &#x26; 0xff;
+buffer[index++] = (lowBits &#x3e;&#x3e; 24) &#x26; 0xff;
+// Encode high bits
+buffer[index++] = highBits &#x26; 0xff;
+...</pre></li>
     </ul>
 
 
@@ -4768,7 +5128,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">getLowBits = function () {
   return this.low_;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+// Multiply two Long values and return the 128 bit value
+var multiply64x2 = function(left, right) {
+if(!left &#x26;&#x26; !right) {
+  return {high: Long.fromNumber(0), low: Long.fromNumber(0)};
+}
+
+var leftHigh = left.shiftRightUnsigned(32);
+var leftLow = new Long(left.<span class="apidocCodeKeywordSpan">getLowBits</span>(), 0);
+var rightHigh = right.shiftRightUnsigned(32);
+var rightLow = new Long(right.getLowBits(), 0);
+
+var productHigh = leftHigh.multiply(rightHigh);
+var productMid = leftHigh.multiply(rightLow);
+var productMid2 = leftLow.multiply(rightHigh);
+var productLow = leftLow.multiply(rightLow);
+...</pre></li>
     </ul>
 
 
@@ -4784,7 +5160,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
   return (this.low_ &#x3e;= 0) ?
       this.low_ : Long.TWO_PWR_32_DBL_ + this.low_;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+* Return the Number value.
+*
+* @method
+* @return {number} the closest floating-point representation to this value.
+*/
+Long.prototype.toNumber = function() {
+ return this.high_ * Long.TWO_PWR_32_DBL_ +
+        this.<span class="apidocCodeKeywordSpan">getLowBitsUnsigned</span>();
+};
+
+/**
+* Return the JSON value.
+*
+* @method
+* @return {string} the JSON representation.
+...</pre></li>
     </ul>
 
 
@@ -4813,7 +5205,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     return this.high_ != 0 ? bit + 33 : bit + 1;
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+ * @return {number} Returns the number of bits needed to represent the absolute value of this Long.
+ */
+Long.prototype.getNumBitsAbs = function() {
+if (this.isNegative()) {
+  if (this.equals(Long.MIN_VALUE)) {
+    return 64;
+  } else {
+    return this.negate().<span class="apidocCodeKeywordSpan">getNumBitsAbs</span>();
+  }
+} else {
+  var val = this.high_ != 0 ? this.high_ : this.low_;
+  for (var bit = 31; bit &#x3e; 0; bit--) {
+    if ((val &#x26; (1 &#x3c;&#x3c; bit)) != 0) {
+      break;
+    }
+...</pre></li>
     </ul>
 
 
@@ -4828,7 +5236,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">greaterThan = function (other) {
   return this.compare(other) &#x3e; 0;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+var log2 = Math.ceil(Math.log(approx) / Math.LN2);
+var delta = (log2 &#x3c;= 48) ? 1 : Math.pow(2, log2 - 48);
+
+// Decrease the approximation until it is smaller than the remainder.  Note
+// that if it is too large, the product overflows and is negative.
+var approxRes = Long.fromNumber(approx);
+var approxRem = approxRes.multiply(other);
+while (approxRem.isNegative() || approxRem.<span class="apidocCodeKeywordSpan">greaterThan</span>(rem)) {
+  approx -= delta;
+  approxRes = Long.fromNumber(approx);
+  approxRem = approxRes.multiply(other);
+}
+
+// We know the answer can&#x27;t be zero... and actually, zero would cause
+// infinite recursion since we would make no progress.
+...</pre></li>
     </ul>
 
 
@@ -4843,7 +5267,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">greaterThanOrEqual = function (other) {
   return this.compare(other) &#x3e;= 0;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+  // Repeat the following until the remainder is less than other:  find a
+  // floating-point that approximates remainder / other *from below*, add this
+  // into the result, and subtract it from the remainder.  It is critical that
+  // the approximate value is less than or equal to the real value so that the
+  // remainder never becomes negative.
+  var res = Long.ZERO;
+  var rem = this;
+  while (rem.<span class="apidocCodeKeywordSpan">greaterThanOrEqual</span>(other)) {
+// Approximate the result of division. This may be a little greater or
+// smaller than the actual value.
+var approx = Math.max(1, Math.floor(rem.toNumber() / other.toNumber()));
+
+// We will tweak the approximate result by changing it in the 48-th digit or
+// the smallest non-fractional digit, whichever is larger.
+var log2 = Math.ceil(Math.log(approx) / Math.LN2);
+...</pre></li>
     </ul>
 
 
@@ -4858,7 +5298,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">isNegative = function () {
   return this.high_ &#x3c; 0;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+  throw Error(&#x27;radix out of range: &#x27; + radix);
+}
+
+if (this.isZero()) {
+  return &#x27;0&#x27;;
+}
+
+if (this.<span class="apidocCodeKeywordSpan">isNegative</span>()) {
+  if (this.equals(Long.MIN_VALUE)) {
+    // We need to change the Long value before it can be negated, so we remove
+    // the bottom-most digit in this base and then recurse to do the rest.
+    var radixLong = Long.fromNumber(radix);
+    var div = this.div(radixLong);
+    var rem = div.multiply(radixLong).subtract(this);
+    return div.toString(radix) + rem.toInt().toString(radix);
+...</pre></li>
     </ul>
 
 
@@ -4873,7 +5329,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">isOdd = function () {
   return (this.low_ &#x26; 1) == 1;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+if (this.isZero()) {
+  return Long.ZERO;
+} else if (other.isZero()) {
+  return Long.ZERO;
+}
+
+if (this.equals(Long.MIN_VALUE)) {
+  return other.<span class="apidocCodeKeywordSpan">isOdd</span>() ? Long.MIN_VALUE : Long.ZERO;
+} else if (other.equals(Long.MIN_VALUE)) {
+  return this.isOdd() ? Long.MIN_VALUE : Long.ZERO;
+}
+
+if (this.isNegative()) {
+  if (other.isNegative()) {
+    return this.negate().multiply(other.negate());
+...</pre></li>
     </ul>
 
 
@@ -4888,7 +5360,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">isZero = function () {
   return this.high_ == 0 &#x26;&#x26; this.low_ == 0;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+ */
+Long.prototype.toString = function(opt_radix) {
+var radix = opt_radix || 10;
+if (radix &#x3c; 2 || 36 &#x3c; radix) {
+  throw Error(&#x27;radix out of range: &#x27; + radix);
+}
+
+if (this.<span class="apidocCodeKeywordSpan">isZero</span>()) {
+  return &#x27;0&#x27;;
+}
+
+if (this.isNegative()) {
+  if (this.equals(Long.MIN_VALUE)) {
+    // We need to change the Long value before it can be negated, so we remove
+    // the bottom-most digit in this base and then recurse to do the rest.
+...</pre></li>
     </ul>
 
 
@@ -4903,7 +5391,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">lessThan = function (other) {
   return this.compare(other) &#x3c; 0;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+var index = 0;
+
+// Create the state of the decimal
+var dec = {
+  low: new Long(low, midl),
+  high: new Long(midh, high) };
+
+if(dec.high.<span class="apidocCodeKeywordSpan">lessThan</span>(Long.ZERO)) {
+  string.push(&#x27;-&#x27;);
+}
+
+// Decode combination field and exponent
+combination = (high &#x3e;&#x3e; 26) &#x26; COMBINATION_MASK;
+
+if((combination &#x3e;&#x3e; 3) == 3) {
+...</pre></li>
     </ul>
 
 
@@ -4918,7 +5422,26 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">lessThanOrEqual = function (other) {
   return this.compare(other) &#x3c;= 0;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+		} else if(elementType == BSON.BSON_DATA_LONG) {
+      // Unpack the low and high bits
+      var lowBits = buffer[index++] | buffer[index++] &#x3c;&#x3c; 8 | buffer[index++] &#x3c;&#x3c; 16 | buffer[index++] &#x3c;&#
+x3c; 24;
+      var highBits = buffer[index++] | buffer[index++] &#x3c;&#x3c; 8 | buffer[index++] &#x3c;&#x3c; 16 | buffer[index++] &#x3c;&#
+x3c; 24;
+      var long = new Long(lowBits, highBits);
+      // Promote the long if possible
+      if(promoteLongs &#x26;&#x26; promoteValues == true) {
+        object[name] = long.<span class="apidocCodeKeywordSpan">lessThanOrEqual</span>(JS_INT_MAX_LONG) &#x26;&#x26; long.greaterThanOrEqual
+(JS_INT_MIN_LONG) ? long.toNumber() : long;
+      } else {
+        object[name] = long;
+      }
+		} else if(elementType == BSON.BSON_DATA_DECIMAL128) {
+			// Buffer to contain the decimal bytes
+			var bytes = new Buffer(16);
+			// Copy the next 16 bytes into the bytes buffer
+...</pre></li>
     </ul>
 
 
@@ -4933,7 +5456,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">modulo = function (other) {
   return this.subtract(this.div(other).multiply(other));
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+  for(var i = 0; i &#x3c;= 3; i++) {
+    // Adjust remainder to match value of next dividend
+    _rem = _rem.shiftLeft(32);
+    // Add the divided to _rem
+    _rem = _rem.add(new Long(value.parts[i], 0));
+    value.parts[i] = _rem.div(DIVISOR).low_;
+    _rem = _rem.<span class="apidocCodeKeywordSpan">modulo</span>(DIVISOR);
+  }
+
+  return { quotient: value, rem: _rem };
+}
+
+// Multiply two Long values and return the 128 bit value
+var multiply64x2 = function(left, right) {
+...</pre></li>
     </ul>
 
 
@@ -5010,7 +5549,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
   c48 &#x26;= 0xFFFF;
   return Long.fromBits((c16 &#x3c;&#x3c; 16) | c00, (c48 &#x3c;&#x3c; 16) | c32);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+}
+
+var leftHigh = left.shiftRightUnsigned(32);
+var leftLow = new Long(left.getLowBits(), 0);
+var rightHigh = right.shiftRightUnsigned(32);
+var rightLow = new Long(right.getLowBits(), 0);
+
+var productHigh = leftHigh.<span class="apidocCodeKeywordSpan">multiply</span>(rightHigh);
+var productMid = leftHigh.multiply(rightLow);
+var productMid2 = leftLow.multiply(rightHigh);
+var productLow = leftLow.multiply(rightLow);
+
+productHigh = productHigh.add(productMid.shiftRightUnsigned(32));
+productMid = new Long(productMid.getLowBits(), 0)
+              .add(productMid2)
+...</pre></li>
     </ul>
 
 
@@ -5029,7 +5584,22 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     return this.not().add(Long.ONE);
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    // We need to change the Long value before it can be negated, so we remove
+    // the bottom-most digit in this base and then recurse to do the rest.
+    var radixLong = Long.fromNumber(radix);
+    var div = this.div(radixLong);
+    var rem = div.multiply(radixLong).subtract(this);
+    return div.toString(radix) + rem.toInt().toString(radix);
+  } else {
+    return &#x27;-&#x27; + this.<span class="apidocCodeKeywordSpan">negate</span>().toString(radix);
+  }
+}
+
+// Do several (6) digits each time through the loop, so as to
+// minimize the calls to the very expensive emulated div.
+var radixToPower = Long.fromNumber(Math.pow(radix, 6));
+...</pre></li>
     </ul>
 
 
@@ -5044,7 +5614,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">not = function () {
   return Long.fromBits(~this.low_, ~this.high_);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+* @method
+* @return {Long} the negation of this value.
+*/
+Long.prototype.negate = function() {
+ if (this.equals(Long.MIN_VALUE)) {
+   return Long.MIN_VALUE;
+ } else {
+   return this.<span class="apidocCodeKeywordSpan">not</span>().add(Long.ONE);
+ }
+};
+
+/**
+* Returns the sum of this and the given Long.
+*
+* @method
+...</pre></li>
     </ul>
 
 
@@ -5074,7 +5660,22 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">or = function (other) {
   return Long.fromBits(this.low_ | other.low_, this.high_ | other.high_);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+// Biased exponent
+var biasedExponent = (exponent + EXPONENT_BIAS);
+var dec = { low: Long.fromNumber(0), high: Long.fromNumber(0) };
+
+// Encode combination, exponent, and significand.
+if(significand.high.shiftRightUnsigned(49).and(Long.fromNumber(1)).equals(Long.fromNumber)) {
+  // Encode &#x27;11&#x27; into bits 1 to 3
+  dec.high = dec.high.<span class="apidocCodeKeywordSpan">or</span>(Long.fromNumber(0x3).shiftLeft(61));
+  dec.high = dec.high.or(Long.fromNumber(biasedExponent).and(Long.fromNumber(0x3fff).shiftLeft(47)));
+  dec.high = dec.high.or(significand.high.and(Long.fromNumber(0x7fffffffffff)));
+} else {
+  dec.high = dec.high.or(Long.fromNumber(biasedExponent &#x26; 0x3fff).shiftLeft(49));
+  dec.high = dec.high.or(significand.high.and(Long.fromNumber(0x1ffffffffffff)));
+}
+...</pre></li>
     </ul>
 
 
@@ -5102,7 +5703,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     }
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+if(!value.parts[0] &#x26;&#x26; !value.parts[1] &#x26;&#x26;
+   !value.parts[2] &#x26;&#x26; !value.parts[3]) {
+  return { quotient: value, rem: _rem };
+}
+
+for(var i = 0; i &#x3c;= 3; i++) {
+  // Adjust remainder to match value of next dividend
+  _rem = _rem.<span class="apidocCodeKeywordSpan">shiftLeft</span>(32);
+  // Add the divided to _rem
+  _rem = _rem.add(new Long(value.parts[i], 0));
+  value.parts[i] = _rem.div(DIVISOR).low_;
+  _rem = _rem.modulo(DIVISOR);
+}
+
+return { quotient: value, rem: _rem };
+...</pre></li>
     </ul>
 
 
@@ -5132,7 +5749,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     }
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+if (other.equals(Long.ONE) ||
+    other.equals(Long.NEG_ONE)) {
+  return Long.MIN_VALUE;  // recall that -MIN_VALUE == MIN_VALUE
+} else if (other.equals(Long.MIN_VALUE)) {
+  return Long.ONE;
+} else {
+  // At this point, we have |other| &#x3e;= 2, so |this/other| &#x3c; |MIN_VALUE|.
+  var halfThis = this.<span class="apidocCodeKeywordSpan">shiftRight</span>(1);
+  var approx = halfThis.div(other).shiftLeft(1);
+  if (approx.equals(Long.ZERO)) {
+    return other.isNegative() ? Long.ONE : Long.NEG_ONE;
+  } else {
+    var rem = this.subtract(other.multiply(approx));
+    var result = approx.add(rem.div(other));
+    return result;
+...</pre></li>
     </ul>
 
 
@@ -5162,7 +5795,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     }
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+// Multiply two Long values and return the 128 bit value
+var multiply64x2 = function(left, right) {
+if(!left &#x26;&#x26; !right) {
+  return {high: Long.fromNumber(0), low: Long.fromNumber(0)};
+}
+
+var leftHigh = left.<span class="apidocCodeKeywordSpan">shiftRightUnsigned</span>(32);
+var leftLow = new Long(left.getLowBits(), 0);
+var rightHigh = right.shiftRightUnsigned(32);
+var rightLow = new Long(right.getLowBits(), 0);
+
+var productHigh = leftHigh.multiply(rightHigh);
+var productMid = leftHigh.multiply(rightLow);
+var productMid2 = leftLow.multiply(rightHigh);
+...</pre></li>
     </ul>
 
 
@@ -5177,7 +5826,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">subtract = function (other) {
   return this.add(other.negate());
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+if (this.isNegative()) {
+  if (this.equals(Long.MIN_VALUE)) {
+    // We need to change the Long value before it can be negated, so we remove
+    // the bottom-most digit in this base and then recurse to do the rest.
+    var radixLong = Long.fromNumber(radix);
+    var div = this.div(radixLong);
+    var rem = div.multiply(radixLong).<span class="apidocCodeKeywordSpan">subtract</span>(this);
+    return div.toString(radix) + rem.toInt().toString(radix);
+  } else {
+    return &#x27;-&#x27; + this.negate().toString(radix);
+  }
+}
+
+// Do several (6) digits each time through the loop, so as to
+...</pre></li>
     </ul>
 
 
@@ -5192,7 +5857,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">toInt = function () {
   return this.low_;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+if (this.isNegative()) {
+  if (this.equals(Long.MIN_VALUE)) {
+    // We need to change the Long value before it can be negated, so we remove
+    // the bottom-most digit in this base and then recurse to do the rest.
+    var radixLong = Long.fromNumber(radix);
+    var div = this.div(radixLong);
+    var rem = div.multiply(radixLong).subtract(this);
+    return div.toString(radix) + rem.<span class="apidocCodeKeywordSpan">toInt</span>().toString(radix);
+  } else {
+    return &#x27;-&#x27; + this.negate().toString(radix);
+  }
+}
+
+// Do several (6) digits each time through the loop, so as to
+// minimize the calls to the very expensive emulated div.
+...</pre></li>
     </ul>
 
 
@@ -5207,7 +5888,24 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">toJSON = function () {
   return this.toString();
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+	&#x27;use strict&#x27;;
+	var $export     = __webpack_require__(8)
+	  , toObject    = __webpack_require__(58)
+	  , toPrimitive = __webpack_require__(16);
+
+	$export($export.P + $export.F * __webpack_require__(7)(function(){
+	  return new Date(NaN).<span class="apidocCodeKeywordSpan">toJSON</span>() !== null || Date.prototype.toJSON.call({toISOString:
+function(){ return 1; }}) !== 1;
+	}), &#x27;Date&#x27;, {
+	  toJSON: function toJSON(key){
+	    var O  = toObject(this)
+	      , pv = toPrimitive(O);
+	    return typeof pv == &#x27;number&#x27; &#x26;&#x26; !isFinite(pv) ? null : O.toISOString();
+	  }
+	});
+...</pre></li>
     </ul>
 
 
@@ -5223,7 +5921,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
   return this.high_ * Long.TWO_PWR_32_DBL_ +
          this.getLowBitsUnsigned();
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+} else if (other.isNegative()) {
+  return this.multiply(other.negate()).negate();
+}
+
+// If both Longs are small, use float multiplication
+if (this.lessThan(Long.TWO_PWR_24_) &#x26;&#x26;
+    other.lessThan(Long.TWO_PWR_24_)) {
+  return Long.fromNumber(this.<span class="apidocCodeKeywordSpan">toNumber</span>() * other.toNumber());
+}
+
+// Divide each Long into 4 chunks of 16 bits, and then add up 4x4 products.
+// We can skip products that would overflow.
+
+var a48 = this.high_ &#x3e;&#x3e;&#x3e; 16;
+var a32 = this.high_ &#x26; 0xFFFF;
+...</pre></li>
     </ul>
 
 
@@ -5280,7 +5994,24 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     }
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+/***/ },
+/* 19 */
+/***/ function(module, exports) {
+
+	var id = 0
+	  , px = Math.random();
+	module.exports = function(key){
+	  return &#x27;Symbol(&#x27;.concat(key === undefined ? &#x27;&#x27; : key, &#x27;)_&#x27;, (++id + px).<span class="apidocCodeKeywordSpan
+">toString</span>(36));
+	};
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// optional / simple context binding
+...</pre></li>
     </ul>
 
 
@@ -5496,7 +6227,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
 
   return new ObjectID(array);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+// Throw an error if it&#x27;s not a valid setup
+if(!valid &#x26;&#x26; id != null){
+  throw new Error(&#x22;Argument passed in must be a single String of 12 bytes or a string of 24 hex characters&#x22;);
+} else if(valid &#x26;&#x26; typeof id == &#x27;string&#x27; &#x26;&#x26; id.length == 24 &#x26;&#x26; hasBufferType) {
+  return new ObjectID(new Buffer(id, &#x27;hex&#x27;));
+} else if(valid &#x26;&#x26; typeof id == &#x27;string&#x27; &#x26;&#x26; id.length == 24) {
+  return ObjectID.<span class="apidocCodeKeywordSpan">createFromHexString</span>(id);
+} else if(id != null &#x26;&#x26; id.length === 12) {
+  // assume 12 byte string
+  this.id = id;
+} else if(id != null &#x26;&#x26; id.toHexString) {
+  // Duck-typing to support ObjectId from different npm packages
+  return id;
+} else {
+...</pre></li>
     </ul>
 
 
@@ -5571,7 +6318,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
 
   return false;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+  // If we are caching the hex string
+  if(ObjectID.cacheHexString) this.__id = this.toString(&#x27;hex&#x27;);
+  // Return the object
+  return;
+}
+
+// Check if the passed in id is valid
+var valid = ObjectID.<span class="apidocCodeKeywordSpan">isValid</span>(id);
+
+// Throw an error if it&#x27;s not a valid setup
+if(!valid &#x26;&#x26; id != null){
+  throw new Error(&#x22;Argument passed in must be a single String of 12 bytes or a string of 24 hex characters&#x22;);
+} else if(valid &#x26;&#x26; typeof id == &#x27;string&#x27; &#x26;&#x26; id.length == 24 &#x26;&#x26; hasBufferType) {
+  return new ObjectID(new Buffer(id, &#x27;hex&#x27;));
+} else if(valid &#x26;&#x26; typeof id == &#x27;string&#x27; &#x26;&#x26; id.length == 24) {
+...</pre></li>
     </ul>
 
 
@@ -5607,7 +6370,24 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     return false;
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+}
+
+// Biased exponent
+var biasedExponent = (exponent + EXPONENT_BIAS);
+var dec = { low: Long.fromNumber(0), high: Long.fromNumber(0) };
+
+// Encode combination, exponent, and significand.
+if(significand.high.shiftRightUnsigned(49).and(Long.fromNumber(1)).<span class="apidocCodeKeywordSpan">equals</span>(Long.fromNumber
+)) {
+  // Encode &#x27;11&#x27; into bits 1 to 3
+  dec.high = dec.high.or(Long.fromNumber(0x3).shiftLeft(61));
+  dec.high = dec.high.or(Long.fromNumber(biasedExponent).and(Long.fromNumber(0x3fff).shiftLeft(47)));
+  dec.high = dec.high.or(significand.high.and(Long.fromNumber(0x7fffffffffff)));
+} else {
+  dec.high = dec.high.or(Long.fromNumber(biasedExponent &#x26; 0x3fff).shiftLeft(49));
+  dec.high = dec.high.or(significand.high.and(Long.fromNumber(0x1ffffffffffff)));
+...</pre></li>
     </ul>
 
 
@@ -5648,7 +6428,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
   // Return the buffer
   return buffer;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+if(!(this instanceof ObjectID)) return new ObjectID(id);
+
+this._bsontype = &#x27;ObjectID&#x27;;
+
+// The most common usecase (blank id, new objectId instance)
+if(id == null || typeof id == &#x27;number&#x27;) {
+  // Generate a new id
+  this.id = this.<span class="apidocCodeKeywordSpan">generate</span>(id);
+  // If we are caching the hex string
+  if(ObjectID.cacheHexString) this.__id = this.toString(&#x27;hex&#x27;);
+  // Return the object
+  return;
+}
+
+// Check if the passed in id is valid
+...</pre></li>
     </ul>
 
 
@@ -5696,7 +6492,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">get_inc = function () {
   return ObjectID.index = (ObjectID.index + 1) % 0xFFFFFF;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+* Update the ObjectID index used in generating new ObjectID&#x27;s on the driver
+*
+* @method
+* @return {number} returns next index value.
+* @ignore
+*/
+ObjectID.prototype.getInc = function() {
+  return this.<span class="apidocCodeKeywordSpan">get_inc</span>();
+};
+
+/**
+* Generate a 12 byte id buffer used in ObjectID&#x27;s
+*
+* @method
+* @param {number} [time] optional parameter allowing to pass in a second based timestamp.
+...</pre></li>
     </ul>
 
 
@@ -5750,7 +6562,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
   if(ObjectID.cacheHexString) this.__id = hexString;
   return hexString;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+ObjectID.prototype.toString = function(format) {
+  // Is the id a buffer then use the buffer toString method to return the format
+  if(this.id &#x26;&#x26; this.id.copy) {
+    return this.id.toString(typeof format === &#x27;string&#x27; ? format : &#x27;hex&#x27;);
+  }
+
+  // if(this.buffer )
+  return this.<span class="apidocCodeKeywordSpan">toHexString</span>();
+};
+
+/**
+* Converts to a string representation of this Id.
+*
+* @return {String} return the 24 byte hex string representation.
+* @ignore
+...</pre></li>
     </ul>
 
 
@@ -5765,7 +6593,24 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">toJSON = function () {
   return this.toHexString();
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+	&#x27;use strict&#x27;;
+	var $export     = __webpack_require__(8)
+	  , toObject    = __webpack_require__(58)
+	  , toPrimitive = __webpack_require__(16);
+
+	$export($export.P + $export.F * __webpack_require__(7)(function(){
+	  return new Date(NaN).<span class="apidocCodeKeywordSpan">toJSON</span>() !== null || Date.prototype.toJSON.call({toISOString:
+function(){ return 1; }}) !== 1;
+	}), &#x27;Date&#x27;, {
+	  toJSON: function toJSON(key){
+	    var O  = toObject(this)
+	      , pv = toPrimitive(O);
+	    return typeof pv == &#x27;number&#x27; &#x26;&#x26; !isFinite(pv) ? null : O.toISOString();
+	  }
+	});
+...</pre></li>
     </ul>
 
 
@@ -5786,7 +6631,24 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
   // if(this.buffer )
   return this.toHexString();
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+/***/ },
+/* 19 */
+/***/ function(module, exports) {
+
+	var id = 0
+	  , px = Math.random();
+	module.exports = function(key){
+	  return &#x27;Symbol(&#x27;.concat(key === undefined ? &#x27;&#x27; : key, &#x27;)_&#x27;, (++id + px).<span class="apidocCodeKeywordSpan
+">toString</span>(36));
+	};
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// optional / simple context binding
+...</pre></li>
     </ul>
 
 
@@ -5843,7 +6705,24 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">toJSON = function () {
   return this.value;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+	&#x27;use strict&#x27;;
+	var $export     = __webpack_require__(8)
+	  , toObject    = __webpack_require__(58)
+	  , toPrimitive = __webpack_require__(16);
+
+	$export($export.P + $export.F * __webpack_require__(7)(function(){
+	  return new Date(NaN).<span class="apidocCodeKeywordSpan">toJSON</span>() !== null || Date.prototype.toJSON.call({toISOString:
+function(){ return 1; }}) !== 1;
+	}), &#x27;Date&#x27;, {
+	  toJSON: function toJSON(key){
+	    var O  = toObject(this)
+	      , pv = toPrimitive(O);
+	    return typeof pv == &#x27;number&#x27; &#x26;&#x26; !isFinite(pv) ? null : O.toISOString();
+	  }
+	});
+...</pre></li>
     </ul>
 
 
@@ -5858,7 +6737,24 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">toString = function () {
   return this.value;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+/***/ },
+/* 19 */
+/***/ function(module, exports) {
+
+	var id = 0
+	  , px = Math.random();
+	module.exports = function(key){
+	  return &#x27;Symbol(&#x27;.concat(key === undefined ? &#x27;&#x27; : key, &#x27;)_&#x27;, (++id + px).<span class="apidocCodeKeywordSpan
+">toString</span>(36));
+	};
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// optional / simple context binding
+...</pre></li>
     </ul>
 
 
@@ -5920,7 +6816,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">fromBits = function (lowBits, highBits) {
   return new Timestamp(lowBits, highBits);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+ c32 += c16 &#x3e;&#x3e;&#x3e; 16;
+ c16 &#x26;= 0xFFFF;
+ c32 += a32 + b32;
+ c48 += c32 &#x3e;&#x3e;&#x3e; 16;
+ c32 &#x26;= 0xFFFF;
+ c48 += a48 + b48;
+ c48 &#x26;= 0xFFFF;
+ return Long.<span class="apidocCodeKeywordSpan">fromBits</span>((c16 &#x3c;&#x3c; 16) | c00, (c48 &#x3c;&#x3c; 16) | c32);
+};
+
+/**
+* Returns the difference of this and the given Long.
+*
+* @method
+* @param {Long} other Long to subtract from this.
+...</pre></li>
     </ul>
 
 
@@ -5946,7 +6858,22 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
   }
   return obj;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+/**
+ * @type {number}
+ * @ignore
+ */
+Long.TWO_PWR_63_DBL_ = Long.TWO_PWR_64_DBL_ / 2;
+
+/** @type {Long} */
+Long.ZERO = Long.<span class="apidocCodeKeywordSpan">fromInt</span>(0);
+
+/** @type {Long} */
+Long.ONE = Long.fromInt(1);
+
+/** @type {Long} */
+Long.NEG_ONE = Long.fromInt(-1);
+...</pre></li>
     </ul>
 
 
@@ -6035,7 +6962,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
   }
   return result;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+  for(; dIdx &#x3c;= lastDigit; dIdx++) {
+    significandLow = significandLow.multiply(Long.fromNumber(10));
+    significandLow = significandLow.add(Long.fromNumber(digits[dIdx]));
+  }
+}
+
+var significand = multiply64x2(significandHigh, Long.<span class="apidocCodeKeywordSpan">fromString</span>(&#x22;100000000000000000
+&#x22;));
+
+significand.low = significand.low.add(significandLow);
+
+if(lessThan(significand.low, significandLow)) {
+  significand.high = significand.high.add(Long.fromNumber(1));
+}
+...</pre></li>
     </ul>
 
 
@@ -6107,7 +7050,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
   c48 &#x26;= 0xFFFF;
   return Timestamp.fromBits((c16 &#x3c;&#x3c; 16) | c00, (c48 &#x3c;&#x3c; 16) | c32);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	&#x27;use strict&#x27;;
+	var strong = __webpack_require__(212);
+
+	// 23.2 Set Objects
+	module.exports = __webpack_require__(213)(&#x27;Set&#x27;, function(get){
+	  return function Set(){ return get(this, arguments.length &#x3e; 0 ? arguments[0] : undefined); };
+	}, {
+	  // 23.2.3.1 Set.prototype.<span class="apidocCodeKeywordSpan">add</span>(value)
+	  add: function add(value){
+	    return strong.def(this, value = value === 0 ? 0 : value, value);
+	  }
+	}, strong);
+
+/***/ },
+/* 215 */
+...</pre></li>
     </ul>
 
 
@@ -6122,7 +7081,24 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">and = function (other) {
   return Timestamp.fromBits(this.low_ &#x26; other.low_, this.high_ &#x26; other.high_);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+}
+
+// Biased exponent
+var biasedExponent = (exponent + EXPONENT_BIAS);
+var dec = { low: Long.fromNumber(0), high: Long.fromNumber(0) };
+
+// Encode combination, exponent, and significand.
+if(significand.high.shiftRightUnsigned(49).<span class="apidocCodeKeywordSpan">and</span>(Long.fromNumber(1)).equals(Long.fromNumber
+)) {
+  // Encode &#x27;11&#x27; into bits 1 to 3
+  dec.high = dec.high.or(Long.fromNumber(0x3).shiftLeft(61));
+  dec.high = dec.high.or(Long.fromNumber(biasedExponent).and(Long.fromNumber(0x3fff).shiftLeft(47)));
+  dec.high = dec.high.or(significand.high.and(Long.fromNumber(0x7fffffffffff)));
+} else {
+  dec.high = dec.high.or(Long.fromNumber(biasedExponent &#x26; 0x3fff).shiftLeft(49));
+  dec.high = dec.high.or(significand.high.and(Long.fromNumber(0x1ffffffffffff)));
+...</pre></li>
     </ul>
 
 
@@ -6155,7 +7131,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     return 1;
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+* Return whether this Long is less than the other.
+*
+* @method
+* @param {Long} other Long to compare against.
+* @return {boolean} whether this Long is less than the other.
+*/
+Long.prototype.lessThan = function(other) {
+ return this.<span class="apidocCodeKeywordSpan">compare</span>(other) &#x3c; 0;
+};
+
+/**
+* Return whether this Long is less than or equal to the other.
+*
+* @method
+* @param {Long} other Long to compare against.
+...</pre></li>
     </ul>
 
 
@@ -6244,7 +7236,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
   }
   return res;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+  }
+
+  for(var i = 0; i &#x3c;= 3; i++) {
+    // Adjust remainder to match value of next dividend
+    _rem = _rem.shiftLeft(32);
+    // Add the divided to _rem
+    _rem = _rem.add(new Long(value.parts[i], 0));
+    value.parts[i] = _rem.<span class="apidocCodeKeywordSpan">div</span>(DIVISOR).low_;
+    _rem = _rem.modulo(DIVISOR);
+  }
+
+  return { quotient: value, rem: _rem };
+}
+
+// Multiply two Long values and return the 128 bit value
+...</pre></li>
     </ul>
 
 
@@ -6259,7 +7267,24 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">equals = function (other) {
   return (this.high_ == other.high_) &#x26;&#x26; (this.low_ == other.low_);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+}
+
+// Biased exponent
+var biasedExponent = (exponent + EXPONENT_BIAS);
+var dec = { low: Long.fromNumber(0), high: Long.fromNumber(0) };
+
+// Encode combination, exponent, and significand.
+if(significand.high.shiftRightUnsigned(49).and(Long.fromNumber(1)).<span class="apidocCodeKeywordSpan">equals</span>(Long.fromNumber
+)) {
+  // Encode &#x27;11&#x27; into bits 1 to 3
+  dec.high = dec.high.or(Long.fromNumber(0x3).shiftLeft(61));
+  dec.high = dec.high.or(Long.fromNumber(biasedExponent).and(Long.fromNumber(0x3fff).shiftLeft(47)));
+  dec.high = dec.high.or(significand.high.and(Long.fromNumber(0x7fffffffffff)));
+} else {
+  dec.high = dec.high.or(Long.fromNumber(biasedExponent &#x26; 0x3fff).shiftLeft(49));
+  dec.high = dec.high.or(significand.high.and(Long.fromNumber(0x1ffffffffffff)));
+...</pre></li>
     </ul>
 
 
@@ -6274,7 +7299,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">getHighBits = function () {
   return this.high_;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+// Number of written bytes
+var numberOfWrittenBytes = !isArray ? buffer.write(key, index, &#x27;utf8&#x27;) : buffer.write(key, index, &#x27;ascii&#x27;);
+// Encode the name
+index = index + numberOfWrittenBytes;
+buffer[index++] = 0;
+var longVal = Long.fromNumber(value);
+var lowBits = longVal.getLowBits();
+var highBits = longVal.<span class="apidocCodeKeywordSpan">getHighBits</span>();
+// Encode low bits
+buffer[index++] = lowBits &#x26; 0xff;
+buffer[index++] = (lowBits &#x3e;&#x3e; 8) &#x26; 0xff;
+buffer[index++] = (lowBits &#x3e;&#x3e; 16) &#x26; 0xff;
+buffer[index++] = (lowBits &#x3e;&#x3e; 24) &#x26; 0xff;
+// Encode high bits
+buffer[index++] = highBits &#x26; 0xff;
+...</pre></li>
     </ul>
 
 
@@ -6289,7 +7330,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">getLowBits = function () {
   return this.low_;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+// Multiply two Long values and return the 128 bit value
+var multiply64x2 = function(left, right) {
+if(!left &#x26;&#x26; !right) {
+  return {high: Long.fromNumber(0), low: Long.fromNumber(0)};
+}
+
+var leftHigh = left.shiftRightUnsigned(32);
+var leftLow = new Long(left.<span class="apidocCodeKeywordSpan">getLowBits</span>(), 0);
+var rightHigh = right.shiftRightUnsigned(32);
+var rightLow = new Long(right.getLowBits(), 0);
+
+var productHigh = leftHigh.multiply(rightHigh);
+var productMid = leftHigh.multiply(rightLow);
+var productMid2 = leftLow.multiply(rightHigh);
+var productLow = leftLow.multiply(rightLow);
+...</pre></li>
     </ul>
 
 
@@ -6305,7 +7362,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
   return (this.low_ &#x3e;= 0) ?
       this.low_ : Timestamp.TWO_PWR_32_DBL_ + this.low_;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+* Return the Number value.
+*
+* @method
+* @return {number} the closest floating-point representation to this value.
+*/
+Long.prototype.toNumber = function() {
+ return this.high_ * Long.TWO_PWR_32_DBL_ +
+        this.<span class="apidocCodeKeywordSpan">getLowBitsUnsigned</span>();
+};
+
+/**
+* Return the JSON value.
+*
+* @method
+* @return {string} the JSON representation.
+...</pre></li>
     </ul>
 
 
@@ -6334,7 +7407,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     return this.high_ != 0 ? bit + 33 : bit + 1;
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+ * @return {number} Returns the number of bits needed to represent the absolute value of this Long.
+ */
+Long.prototype.getNumBitsAbs = function() {
+if (this.isNegative()) {
+  if (this.equals(Long.MIN_VALUE)) {
+    return 64;
+  } else {
+    return this.negate().<span class="apidocCodeKeywordSpan">getNumBitsAbs</span>();
+  }
+} else {
+  var val = this.high_ != 0 ? this.high_ : this.low_;
+  for (var bit = 31; bit &#x3e; 0; bit--) {
+    if ((val &#x26; (1 &#x3c;&#x3c; bit)) != 0) {
+      break;
+    }
+...</pre></li>
     </ul>
 
 
@@ -6349,7 +7438,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">greaterThan = function (other) {
   return this.compare(other) &#x3e; 0;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+var log2 = Math.ceil(Math.log(approx) / Math.LN2);
+var delta = (log2 &#x3c;= 48) ? 1 : Math.pow(2, log2 - 48);
+
+// Decrease the approximation until it is smaller than the remainder.  Note
+// that if it is too large, the product overflows and is negative.
+var approxRes = Long.fromNumber(approx);
+var approxRem = approxRes.multiply(other);
+while (approxRem.isNegative() || approxRem.<span class="apidocCodeKeywordSpan">greaterThan</span>(rem)) {
+  approx -= delta;
+  approxRes = Long.fromNumber(approx);
+  approxRem = approxRes.multiply(other);
+}
+
+// We know the answer can&#x27;t be zero... and actually, zero would cause
+// infinite recursion since we would make no progress.
+...</pre></li>
     </ul>
 
 
@@ -6364,7 +7469,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">greaterThanOrEqual = function (other) {
   return this.compare(other) &#x3e;= 0;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+  // Repeat the following until the remainder is less than other:  find a
+  // floating-point that approximates remainder / other *from below*, add this
+  // into the result, and subtract it from the remainder.  It is critical that
+  // the approximate value is less than or equal to the real value so that the
+  // remainder never becomes negative.
+  var res = Long.ZERO;
+  var rem = this;
+  while (rem.<span class="apidocCodeKeywordSpan">greaterThanOrEqual</span>(other)) {
+// Approximate the result of division. This may be a little greater or
+// smaller than the actual value.
+var approx = Math.max(1, Math.floor(rem.toNumber() / other.toNumber()));
+
+// We will tweak the approximate result by changing it in the 48-th digit or
+// the smallest non-fractional digit, whichever is larger.
+var log2 = Math.ceil(Math.log(approx) / Math.LN2);
+...</pre></li>
     </ul>
 
 
@@ -6379,7 +7500,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">isNegative = function () {
   return this.high_ &#x3c; 0;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+  throw Error(&#x27;radix out of range: &#x27; + radix);
+}
+
+if (this.isZero()) {
+  return &#x27;0&#x27;;
+}
+
+if (this.<span class="apidocCodeKeywordSpan">isNegative</span>()) {
+  if (this.equals(Long.MIN_VALUE)) {
+    // We need to change the Long value before it can be negated, so we remove
+    // the bottom-most digit in this base and then recurse to do the rest.
+    var radixLong = Long.fromNumber(radix);
+    var div = this.div(radixLong);
+    var rem = div.multiply(radixLong).subtract(this);
+    return div.toString(radix) + rem.toInt().toString(radix);
+...</pre></li>
     </ul>
 
 
@@ -6394,7 +7531,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">isOdd = function () {
   return (this.low_ &#x26; 1) == 1;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+if (this.isZero()) {
+  return Long.ZERO;
+} else if (other.isZero()) {
+  return Long.ZERO;
+}
+
+if (this.equals(Long.MIN_VALUE)) {
+  return other.<span class="apidocCodeKeywordSpan">isOdd</span>() ? Long.MIN_VALUE : Long.ZERO;
+} else if (other.equals(Long.MIN_VALUE)) {
+  return this.isOdd() ? Long.MIN_VALUE : Long.ZERO;
+}
+
+if (this.isNegative()) {
+  if (other.isNegative()) {
+    return this.negate().multiply(other.negate());
+...</pre></li>
     </ul>
 
 
@@ -6409,7 +7562,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">isZero = function () {
   return this.high_ == 0 &#x26;&#x26; this.low_ == 0;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+ */
+Long.prototype.toString = function(opt_radix) {
+var radix = opt_radix || 10;
+if (radix &#x3c; 2 || 36 &#x3c; radix) {
+  throw Error(&#x27;radix out of range: &#x27; + radix);
+}
+
+if (this.<span class="apidocCodeKeywordSpan">isZero</span>()) {
+  return &#x27;0&#x27;;
+}
+
+if (this.isNegative()) {
+  if (this.equals(Long.MIN_VALUE)) {
+    // We need to change the Long value before it can be negated, so we remove
+    // the bottom-most digit in this base and then recurse to do the rest.
+...</pre></li>
     </ul>
 
 
@@ -6424,7 +7593,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">lessThan = function (other) {
   return this.compare(other) &#x3c; 0;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+var index = 0;
+
+// Create the state of the decimal
+var dec = {
+  low: new Long(low, midl),
+  high: new Long(midh, high) };
+
+if(dec.high.<span class="apidocCodeKeywordSpan">lessThan</span>(Long.ZERO)) {
+  string.push(&#x27;-&#x27;);
+}
+
+// Decode combination field and exponent
+combination = (high &#x3e;&#x3e; 26) &#x26; COMBINATION_MASK;
+
+if((combination &#x3e;&#x3e; 3) == 3) {
+...</pre></li>
     </ul>
 
 
@@ -6439,7 +7624,26 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">lessThanOrEqual = function (other) {
   return this.compare(other) &#x3c;= 0;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+		} else if(elementType == BSON.BSON_DATA_LONG) {
+      // Unpack the low and high bits
+      var lowBits = buffer[index++] | buffer[index++] &#x3c;&#x3c; 8 | buffer[index++] &#x3c;&#x3c; 16 | buffer[index++] &#x3c;&#
+x3c; 24;
+      var highBits = buffer[index++] | buffer[index++] &#x3c;&#x3c; 8 | buffer[index++] &#x3c;&#x3c; 16 | buffer[index++] &#x3c;&#
+x3c; 24;
+      var long = new Long(lowBits, highBits);
+      // Promote the long if possible
+      if(promoteLongs &#x26;&#x26; promoteValues == true) {
+        object[name] = long.<span class="apidocCodeKeywordSpan">lessThanOrEqual</span>(JS_INT_MAX_LONG) &#x26;&#x26; long.greaterThanOrEqual
+(JS_INT_MIN_LONG) ? long.toNumber() : long;
+      } else {
+        object[name] = long;
+      }
+		} else if(elementType == BSON.BSON_DATA_DECIMAL128) {
+			// Buffer to contain the decimal bytes
+			var bytes = new Buffer(16);
+			// Copy the next 16 bytes into the bytes buffer
+...</pre></li>
     </ul>
 
 
@@ -6454,7 +7658,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">modulo = function (other) {
   return this.subtract(this.div(other).multiply(other));
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+  for(var i = 0; i &#x3c;= 3; i++) {
+    // Adjust remainder to match value of next dividend
+    _rem = _rem.shiftLeft(32);
+    // Add the divided to _rem
+    _rem = _rem.add(new Long(value.parts[i], 0));
+    value.parts[i] = _rem.div(DIVISOR).low_;
+    _rem = _rem.<span class="apidocCodeKeywordSpan">modulo</span>(DIVISOR);
+  }
+
+  return { quotient: value, rem: _rem };
+}
+
+// Multiply two Long values and return the 128 bit value
+var multiply64x2 = function(left, right) {
+...</pre></li>
     </ul>
 
 
@@ -6531,7 +7751,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
   c48 &#x26;= 0xFFFF;
   return Timestamp.fromBits((c16 &#x3c;&#x3c; 16) | c00, (c48 &#x3c;&#x3c; 16) | c32);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+}
+
+var leftHigh = left.shiftRightUnsigned(32);
+var leftLow = new Long(left.getLowBits(), 0);
+var rightHigh = right.shiftRightUnsigned(32);
+var rightLow = new Long(right.getLowBits(), 0);
+
+var productHigh = leftHigh.<span class="apidocCodeKeywordSpan">multiply</span>(rightHigh);
+var productMid = leftHigh.multiply(rightLow);
+var productMid2 = leftLow.multiply(rightHigh);
+var productLow = leftLow.multiply(rightLow);
+
+productHigh = productHigh.add(productMid.shiftRightUnsigned(32));
+productMid = new Long(productMid.getLowBits(), 0)
+              .add(productMid2)
+...</pre></li>
     </ul>
 
 
@@ -6550,7 +7786,22 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     return this.not().add(Timestamp.ONE);
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    // We need to change the Long value before it can be negated, so we remove
+    // the bottom-most digit in this base and then recurse to do the rest.
+    var radixLong = Long.fromNumber(radix);
+    var div = this.div(radixLong);
+    var rem = div.multiply(radixLong).subtract(this);
+    return div.toString(radix) + rem.toInt().toString(radix);
+  } else {
+    return &#x27;-&#x27; + this.<span class="apidocCodeKeywordSpan">negate</span>().toString(radix);
+  }
+}
+
+// Do several (6) digits each time through the loop, so as to
+// minimize the calls to the very expensive emulated div.
+var radixToPower = Long.fromNumber(Math.pow(radix, 6));
+...</pre></li>
     </ul>
 
 
@@ -6565,7 +7816,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">not = function () {
   return Timestamp.fromBits(~this.low_, ~this.high_);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+* @method
+* @return {Long} the negation of this value.
+*/
+Long.prototype.negate = function() {
+ if (this.equals(Long.MIN_VALUE)) {
+   return Long.MIN_VALUE;
+ } else {
+   return this.<span class="apidocCodeKeywordSpan">not</span>().add(Long.ONE);
+ }
+};
+
+/**
+* Returns the sum of this and the given Long.
+*
+* @method
+...</pre></li>
     </ul>
 
 
@@ -6595,7 +7862,22 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">or = function (other) {
   return Timestamp.fromBits(this.low_ | other.low_, this.high_ | other.high_);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+// Biased exponent
+var biasedExponent = (exponent + EXPONENT_BIAS);
+var dec = { low: Long.fromNumber(0), high: Long.fromNumber(0) };
+
+// Encode combination, exponent, and significand.
+if(significand.high.shiftRightUnsigned(49).and(Long.fromNumber(1)).equals(Long.fromNumber)) {
+  // Encode &#x27;11&#x27; into bits 1 to 3
+  dec.high = dec.high.<span class="apidocCodeKeywordSpan">or</span>(Long.fromNumber(0x3).shiftLeft(61));
+  dec.high = dec.high.or(Long.fromNumber(biasedExponent).and(Long.fromNumber(0x3fff).shiftLeft(47)));
+  dec.high = dec.high.or(significand.high.and(Long.fromNumber(0x7fffffffffff)));
+} else {
+  dec.high = dec.high.or(Long.fromNumber(biasedExponent &#x26; 0x3fff).shiftLeft(49));
+  dec.high = dec.high.or(significand.high.and(Long.fromNumber(0x1ffffffffffff)));
+}
+...</pre></li>
     </ul>
 
 
@@ -6623,7 +7905,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     }
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+if(!value.parts[0] &#x26;&#x26; !value.parts[1] &#x26;&#x26;
+   !value.parts[2] &#x26;&#x26; !value.parts[3]) {
+  return { quotient: value, rem: _rem };
+}
+
+for(var i = 0; i &#x3c;= 3; i++) {
+  // Adjust remainder to match value of next dividend
+  _rem = _rem.<span class="apidocCodeKeywordSpan">shiftLeft</span>(32);
+  // Add the divided to _rem
+  _rem = _rem.add(new Long(value.parts[i], 0));
+  value.parts[i] = _rem.div(DIVISOR).low_;
+  _rem = _rem.modulo(DIVISOR);
+}
+
+return { quotient: value, rem: _rem };
+...</pre></li>
     </ul>
 
 
@@ -6653,7 +7951,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     }
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+if (other.equals(Long.ONE) ||
+    other.equals(Long.NEG_ONE)) {
+  return Long.MIN_VALUE;  // recall that -MIN_VALUE == MIN_VALUE
+} else if (other.equals(Long.MIN_VALUE)) {
+  return Long.ONE;
+} else {
+  // At this point, we have |other| &#x3e;= 2, so |this/other| &#x3c; |MIN_VALUE|.
+  var halfThis = this.<span class="apidocCodeKeywordSpan">shiftRight</span>(1);
+  var approx = halfThis.div(other).shiftLeft(1);
+  if (approx.equals(Long.ZERO)) {
+    return other.isNegative() ? Long.ONE : Long.NEG_ONE;
+  } else {
+    var rem = this.subtract(other.multiply(approx));
+    var result = approx.add(rem.div(other));
+    return result;
+...</pre></li>
     </ul>
 
 
@@ -6683,7 +7997,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     }
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+// Multiply two Long values and return the 128 bit value
+var multiply64x2 = function(left, right) {
+if(!left &#x26;&#x26; !right) {
+  return {high: Long.fromNumber(0), low: Long.fromNumber(0)};
+}
+
+var leftHigh = left.<span class="apidocCodeKeywordSpan">shiftRightUnsigned</span>(32);
+var leftLow = new Long(left.getLowBits(), 0);
+var rightHigh = right.shiftRightUnsigned(32);
+var rightLow = new Long(right.getLowBits(), 0);
+
+var productHigh = leftHigh.multiply(rightHigh);
+var productMid = leftHigh.multiply(rightLow);
+var productMid2 = leftLow.multiply(rightHigh);
+...</pre></li>
     </ul>
 
 
@@ -6698,7 +8028,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">subtract = function (other) {
   return this.add(other.negate());
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+if (this.isNegative()) {
+  if (this.equals(Long.MIN_VALUE)) {
+    // We need to change the Long value before it can be negated, so we remove
+    // the bottom-most digit in this base and then recurse to do the rest.
+    var radixLong = Long.fromNumber(radix);
+    var div = this.div(radixLong);
+    var rem = div.multiply(radixLong).<span class="apidocCodeKeywordSpan">subtract</span>(this);
+    return div.toString(radix) + rem.toInt().toString(radix);
+  } else {
+    return &#x27;-&#x27; + this.negate().toString(radix);
+  }
+}
+
+// Do several (6) digits each time through the loop, so as to
+...</pre></li>
     </ul>
 
 
@@ -6713,7 +8059,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">toInt = function () {
   return this.low_;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+if (this.isNegative()) {
+  if (this.equals(Long.MIN_VALUE)) {
+    // We need to change the Long value before it can be negated, so we remove
+    // the bottom-most digit in this base and then recurse to do the rest.
+    var radixLong = Long.fromNumber(radix);
+    var div = this.div(radixLong);
+    var rem = div.multiply(radixLong).subtract(this);
+    return div.toString(radix) + rem.<span class="apidocCodeKeywordSpan">toInt</span>().toString(radix);
+  } else {
+    return &#x27;-&#x27; + this.negate().toString(radix);
+  }
+}
+
+// Do several (6) digits each time through the loop, so as to
+// minimize the calls to the very expensive emulated div.
+...</pre></li>
     </ul>
 
 
@@ -6728,7 +8090,24 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <li>description and source-code<pre class="apidocCodePre">toJSON = function () {
   return this.toString();
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+	&#x27;use strict&#x27;;
+	var $export     = __webpack_require__(8)
+	  , toObject    = __webpack_require__(58)
+	  , toPrimitive = __webpack_require__(16);
+
+	$export($export.P + $export.F * __webpack_require__(7)(function(){
+	  return new Date(NaN).<span class="apidocCodeKeywordSpan">toJSON</span>() !== null || Date.prototype.toJSON.call({toISOString:
+function(){ return 1; }}) !== 1;
+	}), &#x27;Date&#x27;, {
+	  toJSON: function toJSON(key){
+	    var O  = toObject(this)
+	      , pv = toPrimitive(O);
+	    return typeof pv == &#x27;number&#x27; &#x26;&#x26; !isFinite(pv) ? null : O.toISOString();
+	  }
+	});
+...</pre></li>
     </ul>
 
 
@@ -6744,7 +8123,23 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
   return this.high_ * Timestamp.TWO_PWR_32_DBL_ +
          this.getLowBitsUnsigned();
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+} else if (other.isNegative()) {
+  return this.multiply(other.negate()).negate();
+}
+
+// If both Longs are small, use float multiplication
+if (this.lessThan(Long.TWO_PWR_24_) &#x26;&#x26;
+    other.lessThan(Long.TWO_PWR_24_)) {
+  return Long.fromNumber(this.<span class="apidocCodeKeywordSpan">toNumber</span>() * other.toNumber());
+}
+
+// Divide each Long into 4 chunks of 16 bits, and then add up 4x4 products.
+// We can skip products that would overflow.
+
+var a48 = this.high_ &#x3e;&#x3e;&#x3e; 16;
+var a32 = this.high_ &#x26; 0xFFFF;
+...</pre></li>
     </ul>
 
 
@@ -6801,7 +8196,24 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     }
   }
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+/***/ },
+/* 19 */
+/***/ function(module, exports) {
+
+	var id = 0
+	  , px = Math.random();
+	module.exports = function(key){
+	  return &#x27;Symbol(&#x27;.concat(key === undefined ? &#x27;&#x27; : key, &#x27;)_&#x27;, (++id + px).<span class="apidocCodeKeywordSpan
+">toString</span>(36));
+	};
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// optional / simple context binding
+...</pre></li>
     </ul>
 
 
@@ -6815,6 +8227,120 @@ The BSON serializeWithBufferAndIndex method takes an object, a target buffer ins
     <ul>
     <li>description and source-code<pre class="apidocCodePre">xor = function (other) {
   return Timestamp.fromBits(this.low_ ^ other.low_, this.high_ ^ other.high_);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.bson.float_parser" id="apidoc.module.bson.float_parser">module bson.float_parser</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.bson.float_parser.readIEEE754" id="apidoc.element.bson.float_parser.readIEEE754">
+        function <span class="apidocSignatureSpan">bson.float_parser.</span>readIEEE754
+        <span class="apidocSignatureSpan">(buffer, offset, endian, mLen, nBytes)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">readIEEE754 = function (buffer, offset, endian, mLen, nBytes) {
+  var e, m,
+      bBE = (endian === &#x27;big&#x27;),
+      eLen = nBytes * 8 - mLen - 1,
+      eMax = (1 &#x3c;&#x3c; eLen) - 1,
+      eBias = eMax &#x3e;&#x3e; 1,
+      nBits = -7,
+      i = bBE ? 0 : (nBytes - 1),
+      d = bBE ? 1 : -1,
+      s = buffer[offset + i];
+
+  i += d;
+
+  e = s &#x26; ((1 &#x3c;&#x3c; (-nBits)) - 1);
+  s &#x3e;&#x3e;= (-nBits);
+  nBits += eLen;
+  for (; nBits &#x3e; 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8);
+
+  m = e &#x26; ((1 &#x3c;&#x3c; (-nBits)) - 1);
+  e &#x3e;&#x3e;= (-nBits);
+  nBits += mLen;
+  for (; nBits &#x3e; 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8);
+
+  if (e === 0) {
+    e = 1 - eBias;
+  } else if (e === eMax) {
+    return m ? NaN : ((s ? -1 : 1) * Infinity);
+  } else {
+    m = m + Math.pow(2, mLen);
+    e = e - eBias;
+  }
+  return (s ? -1 : 1) * m * Math.pow(2, e - mLen);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.bson.float_parser.writeIEEE754" id="apidoc.element.bson.float_parser.writeIEEE754">
+        function <span class="apidocSignatureSpan">bson.float_parser.</span>writeIEEE754
+        <span class="apidocSignatureSpan">(buffer, value, offset, endian, mLen, nBytes)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">writeIEEE754 = function (buffer, value, offset, endian, mLen, nBytes) {
+  var e, m, c,
+      bBE = (endian === &#x27;big&#x27;),
+      eLen = nBytes * 8 - mLen - 1,
+      eMax = (1 &#x3c;&#x3c; eLen) - 1,
+      eBias = eMax &#x3e;&#x3e; 1,
+      rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0),
+      i = bBE ? (nBytes-1) : 0,
+      d = bBE ? -1 : 1,
+      s = value &#x3c; 0 || (value === 0 &#x26;&#x26; 1 / value &#x3c; 0) ? 1 : 0;
+
+  value = Math.abs(value);
+
+  if (isNaN(value) || value === Infinity) {
+    m = isNaN(value) ? 1 : 0;
+    e = eMax;
+  } else {
+    e = Math.floor(Math.log(value) / Math.LN2);
+    if (value * (c = Math.pow(2, -e)) &#x3c; 1) {
+      e--;
+      c *= 2;
+    }
+    if (e+eBias &#x3e;= 1) {
+      value += rt / c;
+    } else {
+      value += rt * Math.pow(2, 1 - eBias);
+    }
+    if (value * c &#x3e;= 2) {
+      e++;
+      c /= 2;
+    }
+
+    if (e + eBias &#x3e;= eMax) {
+      m = 0;
+      e = eMax;
+    } else if (e + eBias &#x3e;= 1) {
+      m = (value * c - 1) * Math.pow(2, mLen);
+      e = e + eBias;
+    } else {
+      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen);
+      e = 0;
+    }
+  }
+
+  for (; mLen &#x3e;= 8; buffer[offset + i] = m &#x26; 0xff, i += d, m /= 256, mLen -= 8);
+
+  e = (e &#x3c;&#x3c; mLen) | m;
+  eLen += mLen;
+  for (; eLen &#x3e; 0; buffer[offset + i] = e &#x26; 0xff, i += d, e /= 256, eLen -= 8);
+
+  buffer[offset + i - d] |= s * 128;
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
