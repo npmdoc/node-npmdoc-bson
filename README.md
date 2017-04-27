@@ -1,6 +1,6 @@
 # npmdoc-bson
 
-#### api documentation for  [bson (v1.0.4)](https://github.com/mongodb/js-bson#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-bson.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-bson) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-bson.svg)](https://travis-ci.org/npmdoc/node-npmdoc-bson)
+#### basic api documentation for  [bson (v1.0.4)](https://github.com/mongodb/js-bson#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-bson.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-bson) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-bson.svg)](https://travis-ci.org/npmdoc/node-npmdoc-bson)
 
 #### A bson parser for node.js and the browser
 
@@ -90,7 +90,8 @@
         "build": "webpack --config ./webpack.dist.config.js",
         "test": "nodeunit ./test/node"
     },
-    "version": "1.0.4"
+    "version": "1.0.4",
+    "bin": {}
 }
 ```
 
